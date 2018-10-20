@@ -3,10 +3,9 @@ title: "Hw 05: Factor and figure management"
 author: "Figali Taho" 
 date: "19 Oct 2018"
 output:
-  github_document:
-    toc: yes
-always_allow_html: yes
-
+  html_document:
+    self_contained: false
+    keep_md: true
 ---
 
 ## Factor and figure management!
@@ -144,20 +143,31 @@ And I have improved on it like this:
   theme(axis.text = element_text(size=8)) +     
   scale_y_continuous(breaks=1:10*10))
 ```
-Though it is mostly similar, I believe this chart looks nicer in general, much nicer than before.
 
+Though it is mostly similar, I believe this chart looks nicer in general, much nicer than before.
+I have plotted in plotly only one of the plots, due to space concerns. 
+```{r}
+noOceaniaDf_2002 <- noOceaniaDf %>% filter(year==2002)
+(violin_plots_2002 <- ggplot(noOceaniaDf_2002, aes(x=continent, y=lifeExp, color=continent)) +
+  geom_violin() +
+  facet_wrap(~ year) +
+  theme_bw() +  
+  theme(axis.text = element_text(size=8)) +     
+  scale_y_continuous(breaks=1:10*10))
+```
 ```{r}
 suppressPackageStartupMessages(library(plotly))
-ggplotly(violin_plots)
+ggplotly(violin_plots_2002)
 ```
+
 Some things that `plotly` does that `ggplot` doesn't do is the interactivity with the plot. You can effectively zoom in and out of the plot, hover over the plot and gain information for the data visualised etc.  
 
 ### Part 4: Writing figures to file
 I am going to save the above plot:
 ```{r}
-ggsave("images/violin_plot.png", plot = violin_plots, width = 9) # plot matters since it would otherwise store the latest run plot!
+ggsave("images/violin_plot_2002.png", plot = violin_plots_2002) # plot matters since it would otherwise store the latest run plot!
 ```
 
 And loading this same image back:
-![Done assignment]("images/violin_plot.png")
+![Done assignment](images/violin_plot_2002.png)
 
