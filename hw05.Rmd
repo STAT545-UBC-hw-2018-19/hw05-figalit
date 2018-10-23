@@ -156,7 +156,8 @@ noOceaniaDf_2002 <- noOceaniaDf %>% filter(year==2002)
 ```
 ```{r fig.height = 6, fig.width = 6, fig.align = "center"}
 suppressPackageStartupMessages(library(plotly))
-ggplotly(violin_plots_2002)
+# I have commented this because its rendered terribly in the md file. 
+# ggplotly(violin_plots_2002)
 ```
 
 Some things that plotly does that ggplot doesn't do is the interactivity with the plot. You can effectively zoom in and out of the plot, hover over the plot and gain information for the data visualised etc.  
