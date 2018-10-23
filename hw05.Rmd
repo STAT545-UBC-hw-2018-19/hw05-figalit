@@ -2,14 +2,13 @@
 title: "Hw 05: Factor and figure management"
 author: "Figali Taho" 
 date: "19 Oct 2018"
-output:
-  html_document:
-    self_contained: false
-    keep_md: true
+always_allow_html: yes
+output: github_document
+editor_options:
+  chunk_output_type: inline
 ---
-
 ## Factor and figure management!
-For this assignment I will be using [Joey's Singer Dataset](https://github.com/JoeyBernhardt/singer), and gapminder occasionally.
+For this assignment I will be using gapminder.
 
 ```{r setup, include=FALSE}
 suppressPackageStartupMessages(library(tidyverse))
@@ -61,7 +60,7 @@ oceaniaDropped <- gapminder %>%
   filter(continent %!in% c("Oceania"))
 ```
 
-However, `nlevels` doesn't drop, so we need to eplicitly call drop :
+However, nlevels doesn't drop, so we need to eplicitly call drop :
 ```{r}
 nlevels(oceaniaDropped$continent)
 nlevels(droplevels(oceaniaDropped$continent))
@@ -82,7 +81,7 @@ fct_reorder(gapminder$continent, gapminder$lifeExp, mean) %>% # using mean stati
 ```
 
 And a simple comparison of plots to understand why reordering helps! 
-```{r}
+```{r fig.height = 9, fig.width = 9, fig.align = "center"}
 gap_Europe_Africa_2002 <- gapminder %>% 
   filter(continent %in% c("Europe", "Africa")) # By Adding year=2002 we could filter for a single year!
 ggplot(gap_Europe_Africa_2002, aes(x = lifeExp, y = country, color = continent)) + 
@@ -116,7 +115,7 @@ nlevels(ratingsData$item)
 write.csv(ratingsData, file="data/max_Ratings_Patio_Lawn_and_Garden.csv")
 ```
 
-In the `max_Ratings_Patio_Lawn_and_Garden.csv` file we now have only 5 star ratings. There are 2351 ratings, so some users have rated items with a 5 more than once, since levels are 2323 after we drop unnecessary ones. 
+In the max_Ratings_Patio_Lawn_and_Garden.csv file we now have only 5 star ratings. There are 2351 ratings, so some users have rated items with a 5 more than once, since levels are 2323 after we drop unnecessary ones. 
 
 ### Part 3: Visualization design
 ```{r}
@@ -125,7 +124,7 @@ suppressPackageStartupMessages(library(scales))
 
 I had this plot from homework 3 and realised I could improve it with what we learned about visualization design. 
 The colors are very off, I feel it is very packed. Have a look:
-```{r}
+```{r fig.height = 9, fig.width = 9, fig.align = "center"}
 ggplot(gapminder, aes(x=continent, y=lifeExp, fill=continent)) +
   geom_violin() +
   facet_wrap(~ year) +
@@ -135,7 +134,7 @@ ggplot(gapminder, aes(x=continent, y=lifeExp, fill=continent)) +
 ```
 
 And I have improved on it like this:
-```{r}
+```{r fig.height = 9, fig.width = 9, fig.align = "center"}
 (violin_plots <- ggplot(noOceaniaDf, aes(x=continent, y=lifeExp, color=continent)) +
   geom_violin() +
   facet_wrap(~ year) +
@@ -146,7 +145,7 @@ And I have improved on it like this:
 
 Though it is mostly similar, I believe this chart looks nicer in general, much nicer than before.
 I have plotted in plotly only one of the plots, due to space concerns. 
-```{r}
+```{r fig.height = 6, fig.width = 6, fig.align = "center"}
 noOceaniaDf_2002 <- noOceaniaDf %>% filter(year==2002)
 (violin_plots_2002 <- ggplot(noOceaniaDf_2002, aes(x=continent, y=lifeExp, color=continent)) +
   geom_violin() +
@@ -155,12 +154,12 @@ noOceaniaDf_2002 <- noOceaniaDf %>% filter(year==2002)
   theme(axis.text = element_text(size=8)) +     
   scale_y_continuous(breaks=1:10*10))
 ```
-```{r}
+```{r fig.height = 6, fig.width = 6, fig.align = "center"}
 suppressPackageStartupMessages(library(plotly))
 ggplotly(violin_plots_2002)
 ```
 
-Some things that `plotly` does that `ggplot` doesn't do is the interactivity with the plot. You can effectively zoom in and out of the plot, hover over the plot and gain information for the data visualised etc.  
+Some things that plotly does that ggplot doesn't do is the interactivity with the plot. You can effectively zoom in and out of the plot, hover over the plot and gain information for the data visualised etc.  
 
 ### Part 4: Writing figures to file
 I am going to save the above plot:
